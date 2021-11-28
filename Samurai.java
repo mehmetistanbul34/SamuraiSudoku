@@ -55,9 +55,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+import src.MyMain;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 class Samurai {
 
@@ -65,11 +68,52 @@ class Samurai {
 
     private static int[][] samuriArr = new int[SAMURAI_ARR_SIZE][SAMURAI_ARR_SIZE];
 
+    private static String text2="", text="";
+
     public static void main(String args[]) throws IOException {
         // Create an instance.
         Samurai samurai = new Samurai();
         samuriArr = samurai.getSumariDokuArrFromFile();
-        samurai.solve(samuriArr);
+
+        Scanner scanner = new Scanner(System.in);
+        String secim = "Seçiminiz:\n"
+                +"Çözülmemiş Sudokuyu Göster (1)\n"
+                +"Sudokuyu Çöz ve Göster (2)\n"
+                +"Çıkış için (-1)\n"
+                +"Seçiminiz: ";
+        int enter=0;
+        System.out.print(secim);
+        enter = scanner.nextInt();
+        switch (enter){
+            case 1:
+                samurai.report(samuriArr);
+                if (!text.equals("")) {
+                    System.out.println("text : "+text);
+                }
+                else {
+                    System.out.println("\n\ntext boş\n\n");
+                }
+                MyMain myMain = new MyMain(text);
+                myMain.setVisible(true);
+                break;
+            case 2:
+                samurai.solve(samuriArr);
+                if (!text2.equals("")) {
+                    System.out.println("text2 : "+text2);
+                }
+                else {
+                    System.out.println("\n\ntext2 boş\n\n");
+                }
+                MyMain myMain2 = new MyMain(text2);
+                myMain2.setVisible(true);
+                break;
+            case -1:
+                break;
+            default:
+                System.out.println("Geçersiz seçim yaptınız. Lütfen tekrar deneyiniz!!");;
+        }
+
+
     }
 
     // Solve a puzzle.
@@ -77,14 +121,14 @@ class Samurai {
     int[][]  getSumariDokuArrFromFile() throws IOException {
         FileReader f = new FileReader("harita.txt");
         BufferedReader in = new BufferedReader(f);
-        String line,text="";
+        String line;
 
         line = in.readLine();
         int i=0;
         while (line!=null){
             i++;
             text += line;
-            System.out.println(i+". satır: "+text);;
+            //System.out.println(i+". satır: "+text);;
             line = in.readLine();
         }
         f.close();
@@ -103,7 +147,7 @@ class Samurai {
             char c = boardStr.charAt(i);
             if (c >= '1' && c <='9') {
                 if (row > SAMURAI_ARR_SIZE || col > SAMURAI_ARR_SIZE) {
-                    throw new IllegalArgumentException("SudokuModel: "
+                    throw new IllegalArgumentException("src.SudokuModel: "
                             + " Attempt to initialize outside 1-9 "
                             + " at row " + (row+1) + " and col " + (col+1));
                 }
@@ -115,7 +159,7 @@ class Samurai {
                 row++;
                 col = 0;
             } else {
-                throw new IllegalArgumentException("SudokuModel: Character '" + c
+                throw new IllegalArgumentException("src.SudokuModel: Character '" + c
                         + "' not allowed in board specification");
             }
         }
@@ -136,7 +180,7 @@ class Samurai {
 
         DancingLinks dl = new DancingLinks(puzzle);
 
-        report(puzzle);
+        //report(puzzle);
 
         dl.solve(this);
     }
@@ -353,7 +397,12 @@ class Samurai {
             }
 
             // Report the result.
-
+            for (int i = 0; i <21 ; i++) {
+                for (int j = 0; j < 21; j++) {
+                    text2 += a[i][j];
+                }
+                text2 +='/';
+            }
             samurai.report(a);
 
             // Create an array for the stats
@@ -365,7 +414,7 @@ class Samurai {
 
             // Report stats.
 
-            samurai.report(s);
+            //samurai.report(s);
         }
 
         // Start the search process.
