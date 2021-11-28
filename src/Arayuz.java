@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MyMain extends JFrame {
+public class Arayuz extends JFrame {
     //=================================================================== fields
     private SudokuModel _sudokuLogic;//new src.SudokuModel(INITIAL_BOARD);
     private SudokuBoardDisplay _sudokuBoard;//new src.SudokuBoardDisplay(_sudokuLogic);
@@ -15,7 +15,7 @@ public class MyMain extends JFrame {
     private JTextField _colTF = new JTextField(2);
     private JTextField _valTF = new JTextField(2);
 
-    public MyMain(String text) throws HeadlessException, IOException {
+    public Arayuz(String text) throws HeadlessException, IOException {
         _sudokuLogic = new SudokuModel(text);
         _sudokuLogic.solve();
         _sudokuBoard = new SudokuBoardDisplay(_sudokuLogic);

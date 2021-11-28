@@ -55,7 +55,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-import src.MyMain;
+import src.Arayuz;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -93,8 +93,8 @@ class Samurai {
                 else {
                     System.out.println("\n\ntext boş\n\n");
                 }
-                MyMain myMain = new MyMain(text);
-                myMain.setVisible(true);
+                Arayuz arayuz = new Arayuz(text);
+                arayuz.setVisible(true);
                 break;
             case 2:
                 samurai.solve(samuriArr);
@@ -104,8 +104,8 @@ class Samurai {
                 else {
                     System.out.println("\n\ntext2 boş\n\n");
                 }
-                MyMain myMain2 = new MyMain(text2);
-                myMain2.setVisible(true);
+                Arayuz arayuz2 = new Arayuz(text2);
+                arayuz2.setVisible(true);
                 break;
             case -1:
                 break;
