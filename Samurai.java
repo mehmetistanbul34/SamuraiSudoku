@@ -63,6 +63,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @SuppressWarnings("serial")
@@ -83,7 +84,8 @@ class Samurai extends JPanel{
         String secim = "Seçiminiz:\n"
                 +"Çözülmemiş Sudokuyu Göster (1)\n"
                 +"Sudokuyu Çöz ve Göster (2)\n"
-                +"Grafiği Göster (3)\n"
+                +"5 Thread Grafiği Göster (3)\n"
+                +"10 Thread Grafiği Göster (4)\n"
                 +"Çıkış için (-1)\n"
                 +"Seçiminiz: ";
         int enter=0;
@@ -114,18 +116,38 @@ class Samurai extends JPanel{
                 break;
             case 3:
                 List<Integer> scores = new ArrayList<>();
-                int maxDataPoints = 16;
+                Random random = new Random();
+                int thread5 = 5;
                 int maxScore = 20;
-                for (int i = 0; i < maxDataPoints ; i++) {
-                    scores.add(i);//random.nextInt(maxScore));
+                for (int i = 0; i < thread5 ; i++) {
+                    scores.add(random.nextInt(maxScore));
                 }
                 Grafiks grafiks = new Grafiks(scores);
 
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        grafiks.createAndShowGui();
+                        grafiks.createAndShowGui(scores);
                     }
                 });
+            case 4:
+                List<Integer> scores2 = new ArrayList<>();
+                Random random2 = new Random();
+                int thread10=5;
+                int maxScore2 = 20;
+                if(enter==4)
+                    thread10 = 10;
+                for (int i = 0; i < thread10 ; i++) {
+                    scores2.add(random2.nextInt(maxScore2));
+                }
+                if(enter==4) {
+                    Grafiks grafiks2 = new Grafiks(scores2);
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            grafiks2.createAndShowGui(scores2);
+                        }
+                    });
+                }
             case -1:
                 break;
             default:

@@ -22,7 +22,7 @@ class Grafiks extends JPanel {
     private static final Stroke GRAPH_STROKE = new BasicStroke(3f);
     private static final int GRAPH_POINT_WIDTH = 10;
     private static final int Y_HATCH_CNT = 10;
-    private List<Integer> scores;
+    public List<Integer> scores;
 
     public Grafiks(List<Integer> scores) {
         this.scores = scores;
@@ -97,17 +97,17 @@ class Grafiks extends JPanel {
         return new Dimension(PREF_W, PREF_H);
     }
 
-    public static void createAndShowGui() {
-        List<Integer> scores = new ArrayList<Integer>();
+    public static void createAndShowGui(List<Integer> scores) {
+        /*List<Integer> scores = new ArrayList<Integer>();
         Random random = new Random();
         int maxDataPoints = 16;
         int maxScore = 20;
         for (int i = 0; i < maxDataPoints ; i++) {
             scores.add(i);//random.nextInt(maxScore));
-        }
+        }*/
         Grafiks mainPanel = new Grafiks(scores);
 
-        JFrame frame = new JFrame("DrawGraph");
+        JFrame frame = new JFrame("Graphics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(mainPanel);
         frame.pack();
