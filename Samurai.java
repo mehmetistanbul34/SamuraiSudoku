@@ -57,12 +57,16 @@
 
 import src.Arayuz;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-class Samurai {
+@SuppressWarnings("serial")
+class Samurai extends JPanel{
 
     private static final int SAMURAI_ARR_SIZE = 21;
 
@@ -79,6 +83,7 @@ class Samurai {
         String secim = "Seçiminiz:\n"
                 +"Çözülmemiş Sudokuyu Göster (1)\n"
                 +"Sudokuyu Çöz ve Göster (2)\n"
+                +"Grafiği Göster (3)\n"
                 +"Çıkış için (-1)\n"
                 +"Seçiminiz: ";
         int enter=0;
@@ -107,6 +112,20 @@ class Samurai {
                 Arayuz arayuz2 = new Arayuz(text2);
                 arayuz2.setVisible(true);
                 break;
+            case 3:
+                List<Integer> scores = new ArrayList<>();
+                int maxDataPoints = 16;
+                int maxScore = 20;
+                for (int i = 0; i < maxDataPoints ; i++) {
+                    scores.add(i);//random.nextInt(maxScore));
+                }
+                Grafiks grafiks = new Grafiks(scores);
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        grafiks.createAndShowGui();
+                    }
+                });
             case -1:
                 break;
             default:
