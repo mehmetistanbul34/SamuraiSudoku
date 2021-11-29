@@ -61,8 +61,12 @@ class Samurai extends JPanel{
                 int thread5 = 5;
                 int maxScore = 20;
                 for (int i = 1; i <= thread5 ; i++) {
-                    if (enter==3)
-                        maxScore = threadIslem(i);
+                    if (enter==3) {
+                        String name = "Thread"+String.valueOf(i);
+                        Threads threads = new Threads(name);
+                        maxScore = threads.threadIslem(i);
+                        threads.start();
+                    }
                     scores.add(random.nextInt(maxScore));
                 }
                 Grafiks grafiks = new Grafiks(scores);
@@ -80,8 +84,12 @@ class Samurai extends JPanel{
                 if(enter==4)
                     thread10 = 10;
                 for (int i = 1; i <= thread10 ; i++) {
-                    if (enter==4)
-                        maxScore2 = threadIslem(i);
+                    if (enter==4){
+                        String name = "Thread"+String.valueOf(i);
+                        Threads threads = new Threads(name);
+                        maxScore2 = threads.threadIslem(i);
+                        threads.start();
+                    }
                     scores2.add(random2.nextInt(maxScore2));
                 }
                 if(enter==4) {
@@ -189,7 +197,7 @@ class Samurai extends JPanel{
         }
 
         try {
-            FileWriter fileWriter = new FileWriter("deneme.txt");
+            FileWriter fileWriter = new FileWriter("threadWorks.txt");
             fileWriter.write(txt);
             fileWriter.close();
         } catch (IOException e) {
@@ -197,32 +205,6 @@ class Samurai extends JPanel{
         }
 
         System.out.println("-----------------------------------------");
-    }
-
-    public static int threadIslem(int thread) throws IOException {
-        FileReader f = new FileReader("deneme.txt");
-        BufferedReader in = new BufferedReader(f);
-        int satir = 0;
-        String txt="";
-        while (true){
-            satir++;
-            if(satir == thread)
-                break;
-            in.readLine();
-        }
-        txt = in.readLine();
-        int toplam=0;
-        for (int j = 0; j < txt.length(); j++) {
-            toplam += (int)txt.charAt(j)-'0';
-        }
-        f.close();
-        int sonuc = toplam/thread;
-        if (sonuc>50)
-            sonuc=toplam - 30*thread;
-        if (sonuc<5)
-            sonuc=toplam+thread;
-        System.out.println(thread+". Thread Toplam İşi: "+sonuc);
-        return sonuc;
     }
 
 ///////////////////////////////////////////////////////////////////////////////
