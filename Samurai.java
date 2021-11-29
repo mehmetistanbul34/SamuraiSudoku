@@ -58,9 +58,7 @@
 import src.Arayuz;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -119,7 +117,9 @@ class Samurai extends JPanel{
                 Random random = new Random();
                 int thread5 = 5;
                 int maxScore = 20;
-                for (int i = 0; i < thread5 ; i++) {
+                for (int i = 1; i <= thread5 ; i++) {
+                    if (enter==3)
+                        maxScore = threadIslem(i);
                     scores.add(random.nextInt(maxScore));
                 }
                 Grafiks grafiks = new Grafiks(scores);
@@ -136,7 +136,9 @@ class Samurai extends JPanel{
                 int maxScore2 = 20;
                 if(enter==4)
                     thread10 = 10;
-                for (int i = 0; i < thread10 ; i++) {
+                for (int i = 1; i <= thread10 ; i++) {
+                    if (enter==4)
+                        maxScore2 = threadIslem(i);
                     scores2.add(random2.nextInt(maxScore2));
                 }
                 if(enter==4) {
@@ -151,7 +153,8 @@ class Samurai extends JPanel{
             case -1:
                 break;
             default:
-                System.out.println("Geçersiz seçim yaptınız. Lütfen tekrar deneyiniz!!");;
+                System.out.println("Geçersiz seçim yaptınız. Lütfen tekrar deneyiniz!!");
+                break;
         }
 
 
@@ -229,18 +232,54 @@ class Samurai extends JPanel{
     // Print the solution.
 
     void report(int[][] solution) {
+        String txt = "";
         for (int r = 0; r < PUZZLE_SIDE; r++) {
             for (int c = 0; c < PUZZLE_SIDE; c++)
-                if (solution[r][c] > 0)
+                if (solution[r][c] > 0) {
                     System.out.print(solution[r][c] + " ");
-
-                else
+                    txt += solution[r][c];
+                }else
                     System.out.print(". ");
 
             System.out.println();
+            txt += "\n";
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter("deneme.txt");
+            fileWriter.write(txt);
+            fileWriter.close();
+        } catch (IOException e) {
+            // Exception handling
         }
 
         System.out.println("-----------------------------------------");
+    }
+
+    public static int threadIslem(int thread) throws IOException {
+        FileReader f = new FileReader("deneme.txt");
+        BufferedReader in = new BufferedReader(f);
+        int satir = 0;
+        String txt="";
+        while (true){
+            satir++;
+            if(satir == thread)
+                break;
+            in.readLine();
+        }
+        txt = in.readLine();
+        int toplam=0;
+        for (int j = 0; j < txt.length(); j++) {
+            toplam += (int)txt.charAt(j)-'0';
+        }
+        f.close();
+        int sonuc = toplam/thread;
+        if (sonuc>50)
+            sonuc=toplam - 30*thread;
+        if (sonuc<5)
+            sonuc=toplam+thread;
+        System.out.println(thread+". Thread Toplam İşi: "+sonuc);
+        return sonuc;
     }
 
 ///////////////////////////////////////////////////////////////////////////////

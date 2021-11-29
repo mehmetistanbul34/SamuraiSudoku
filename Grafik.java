@@ -22,7 +22,7 @@ class Grafiks extends JPanel {
     private static final Stroke GRAPH_STROKE = new BasicStroke(3f);
     private static final int GRAPH_POINT_WIDTH = 10;
     private static final int Y_HATCH_CNT = 10;
-    public List<Integer> scores;
+    private List<Integer> scores;
 
     public Grafiks(List<Integer> scores) {
         this.scores = scores;
@@ -43,10 +43,6 @@ class Grafiks extends JPanel {
             int y1 = (int) ((MAX_SCORE - scores.get(i)) * yScale + BORDER_GAP);
             graphPoints.add(new Point(x1, y1));
         }
-
-        //int x11 = (int) (5 * xScale + BORDER_GAP);30,                         //79,128,178,227,276,326,
-        //int y11 = (int) ((MAX_SCORE - scores.get(5)) * yScale + BORDER_GAP);  //216,433,123,123,92,371,526,
-        //graphPoints.add(new Point(x11, y11));
 
         // create x and y axes
         g2.drawLine(BORDER_GAP, getHeight() - BORDER_GAP, BORDER_GAP, BORDER_GAP);
@@ -97,16 +93,15 @@ class Grafiks extends JPanel {
         return new Dimension(PREF_W, PREF_H);
     }
 
-    public static void createAndShowGui(List<Integer> scores) {
-        /*List<Integer> scores = new ArrayList<Integer>();
-        Random random = new Random();
-        int maxDataPoints = 16;
-        int maxScore = 20;
-        for (int i = 0; i < maxDataPoints ; i++) {
-            scores.add(i);//random.nextInt(maxScore));
-        }*/
+    public void createAndShowGui(List<Integer> scores2) {
+        List<Integer> scores = new ArrayList<Integer>();
+        for (int i = 0; i < scores2.size() ; i++) {
+            if (scores2.get(i)>50)
+                scores.add(scores2.get(i)-40);//random.nextInt(maxScore));
+            else
+                scores.add(scores2.get(i));
+        }
         Grafiks mainPanel = new Grafiks(scores);
-
         JFrame frame = new JFrame("Graphics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(mainPanel);
@@ -114,12 +109,4 @@ class Grafiks extends JPanel {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }
-
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                createAndShowGui();
-//            }
-//        });
-//    }
 }
