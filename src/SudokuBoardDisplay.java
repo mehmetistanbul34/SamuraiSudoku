@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 
-///////////////////////////////////////////////////////////// src.SudokuBoardDisplay
 public class SudokuBoardDisplay  extends JComponent {
     //================================================================ constants
     private static final int CELL_PIXELS = 50;  // Size of each cell.

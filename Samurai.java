@@ -175,12 +175,8 @@ class Samurai extends JPanel{
 
         DancingLinks dl = new DancingLinks(puzzle);
 
-        //report(puzzle);
-
         dl.solve(this);
     }
-
-    // Print the solution.
 
     void report(int[][] solution) {
         String txt = "";
@@ -207,11 +203,7 @@ class Samurai extends JPanel{
         System.out.println("-----------------------------------------");
     }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Define constants for the dimensions of the puzzle.
-//
-///////////////////////////////////////////////////////////////////////////////
+
 
     static final int PUZZLE_SIDE = 21;
     static final int PUZZLE_SIZE = 441;
@@ -220,15 +212,6 @@ class Samurai extends JPanel{
     static final int SQUARE_SIDE = 3;
     static final int COLUMN_SIZE = 1692;
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//   Declare an array which defines which squares are in which puzzle,
-//   including those in two puzzles, and those that aren't in any
-//   puzzle, an array which defines which puzzle row a samurai row is
-//   in, and an array which defines which puzzle column a samurai
-//   column is in.
-//
-///////////////////////////////////////////////////////////////////////////////
 
     static final int[][] SAMURAI_SQUARE =
             {{0}, {0}, {0}, {}, {1}, {1}, {1},
@@ -253,12 +236,7 @@ class Samurai extends JPanel{
                     {0, 1, 2, 3, 4, 5, 6, 7, 8},
                     {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8}};
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Class DancingLinks implements the Dancing Links algorithm adapted
-//  for Samurai Sudoku puzzles.
-//
-///////////////////////////////////////////////////////////////////////////////
+
 
     class DancingLinks {
         Samurai samurai;
@@ -268,15 +246,6 @@ class Samurai extends JPanel{
         Column h;
         Node[] o;
 
-        // Create a column head and add 1692 (21 x 21 = 441 slots + 5
-        // puzzles x 9 rows x 9 digits = 405 + 5 puzzles x 9 columns x
-        // 9 digits = 405 + 49 slots x 9 digits = 441) columns. Empty
-        // columns will be removed. 3645 (9 rows x 9 columns x 9
-        // digits x 5 puzzles) rows of nodes are added to the
-        // columns. Those rows corresponding to slots in one puzzle
-        // will have four nodes, those overlapping two puzzles will
-        // have six nodes. If a row is part of the puzzle it is
-        // removed from the matrix and added to the solution.
 
         DancingLinks(int[][] p) {
             // Column row head.
@@ -294,102 +263,60 @@ class Samurai extends JPanel{
             Node[] l = new Node[PUZZLE_SIZE];
             int i = 0;
 
-            // For each samurai (big) row, column and possible digit.
-
             for (int r = 0; r < PUZZLE_SIDE; r++)
                 for (int c = 0; c < PUZZLE_SIDE; c++)
                     for (int d = 0; d < SUDOKU_SIDE; d++) {
-                        // Calculate row number for possible
-                        // move in samurai (big) puzzle.
 
                         int k = 1 + (r * PUZZLE_SIDE * SUDOKU_SIDE) +
                                 (c * SUDOKU_SIDE) + d;
 
-                        // See what samurai (big) square we're in.
-
                         int s = (c / 3) + ((r / 3) * 7);
 
-                        // If the slot is in a puzzle create a row of
-                        // nodes.
-
                         if (SAMURAI_SQUARE[s].length > 0) {
-                            // Create a node for the slot.
 
                             Node n = new Node(m[(r * PUZZLE_SIDE) + c], k);
 
-                            // For each puzzle that this slot is in...
-
                             for (int j = 0; j < SAMURAI_SQUARE[s].length; j++) {
-                                // Find which puzzle the slot is in.
 
                                 int pz = SAMURAI_SQUARE[s][j];
-
-                                // Find the puzzle row and column.
 
                                 int pr = SUDOKU_ROW[pz][r];
                                 int pc = SUDOKU_COLUMN[pz][c];
 
-                                // Add a node for the puzzle, row and
-                                // digit.
-
                                 n.add(new Node(m[PUZZLE_SIZE +
                                         (pz * SUDOKU_SIZE) +
                                         (pr * SUDOKU_SIDE) + d], k));
-
-                                // Add a node for the puzzle, column
-                                // and digit.
 
                                 n.add(new Node(m[PUZZLE_SIZE + 405 +
                                         (pz * SUDOKU_SIZE) +
                                         (pc * SUDOKU_SIDE) + d], k));
                             }
 
-                            // Add a node for the samurai (big) square
-                            // and digit.
-
                             n.add(new Node(m[PUZZLE_SIZE + 405 + 405 +
                                     (s * SUDOKU_SIDE) + d], k));
-
-                            // If this row is in the puzzle, add it to the
-                            // list.
 
                             if (p[c][r] == (d + 1))
                                 l[i++] = n;
                         }
                     }
 
-            // There will be empty columns corresponding to the unused
-            // slots in the samurai (big) puzzle. Remove the empty
-            // columns.
-
             for (Column c = (Column) h.r; c != h; c = (Column) c.r)
                 if (c.s == 0)
                     c.cover();
 
-            // Create an array for the output.
-
             o = new Node[PUZZLE_SIZE];
-
-            // Remove the rows in the list and add them to the output.
 
             for (int j = 0; j < i; j++) {
                 l[j].remove();
                 o[index++] = l[j];
             }
 
-            // Create an array for the stats.
-
             stats = new int[PUZZLE_SIZE];
         }
 
-        // Rearrange the output to match the puzzle.
-
         void report(int[] o) {
-            // Create an array for the result.
 
             int a[][] = new int[PUZZLE_SIDE][PUZZLE_SIDE];
-
-            // Convert the row number back to row, column, digit.
 
             for (int i = 0; i < o.length; i++) {
                 int v = o[i];
@@ -416,23 +343,12 @@ class Samurai extends JPanel{
 
             for (int i = 0; i < o.length; i++)
                 s[i / PUZZLE_SIDE][i % PUZZLE_SIDE] = stats[i];
-
-            // Report stats.
-
-            //samurai.report(s);
         }
-
-        // Start the search process.
 
         void solve(Samurai s) {
             samurai = s;
             search(index);
         }
-
-
-        // This is the procedure search(k) from the Dancing Links
-        // algorithm with an added feature to report only one
-        // solution.
 
         void search(int k) {
             // If a result has already been found, return.
@@ -512,14 +428,6 @@ class Samurai extends JPanel{
         }
     }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Class Node has four links: left, right, up, down, which reference
-//  adjacent nodes, a link which references the column and a row
-//  number.
-//
-///////////////////////////////////////////////////////////////////////////////
-
     class Node {
         Node l;
         Node r;
@@ -576,16 +484,8 @@ class Samurai extends JPanel{
         }
     }
 
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Class Column inherits the links from the Node class and has a column size.
-//
-///////////////////////////////////////////////////////////////////////////////
-
     class Column extends Node {
         int s;
-
-        // Create a self referencing column using the Node constructor.
 
         Column(Column c, int n) {
             super(null, n);
@@ -594,21 +494,13 @@ class Samurai extends JPanel{
                 c.add(this);
         }
 
-        // This is the procedure cover(c) from the Dancing Links
-        // algorithm.
-
         void cover() {
             // Cover this column.
 
             r.l = l;
             l.r = r;
 
-            // For all the rows in this column going down...
-
             for (Node i = d; i != this; i = i.d)
-
-                // For all the nodes in this row except this one,
-                // going right...
 
                 for (Node j = i.r; j != i; j = j.r) {
                     // Cover this row.
@@ -622,24 +514,15 @@ class Samurai extends JPanel{
                 }
         }
 
-        // This is the procedure uncover(c) from the Dancing Links
-        // algorithm.
-
         void uncover() {
-            // For all the rows in this column going up...
 
             for (Node i = u; i != this; i = i.u)
-
-                // For all the nodes in this row except this one,
-                // going left...
 
                 for (Node j = i.l; j != i; j = j.l) {
                     // Uncover this row.
 
                     j.u.d = j;
                     j.d.u = j;
-
-                    // Adjust the column size.
 
                     j.c.s++;
                 }
@@ -650,8 +533,6 @@ class Samurai extends JPanel{
             l.r = this;
         }
 
-        // Add a column to the left of this column.
-
         void add(Column c) {
             c.l = this.l;
             c.r = this;
@@ -660,8 +541,6 @@ class Samurai extends JPanel{
             this.l = c;
         }
 
-        // Add a node to the end of this column.
-
         void add(Node n) {
             n.u = this.u;
             n.d = this;
@@ -669,11 +548,7 @@ class Samurai extends JPanel{
             this.u.d = n;
             this.u = n;
 
-            // Increment the column size.
-
             s++;
         }
     }
 }
-
-///////////////////////////////////////////////////////////////////////////////
