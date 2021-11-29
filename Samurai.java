@@ -1,60 +1,3 @@
-////////////////////////////////////////////////////////////////////////////////
-//
-//  Samurai - Samurai Sudoku solver.
-//
-//  Copyright (C) 2006	Bill Farmer
-//
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//
-//  Bill Farmer	 william j farmer [at] yahoo [dot] co [dot] uk.
-//
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//   Samurai Sudoku puzzles are made up of five overlapping puzzles
-//   like this:
-//
-//      +---+---+---+   +---+---+---+
-//      |   |   |   |   |   |   |   |
-//      +---+---+---+   +---+---+---+
-//      |   | 1 |   |   |   | 2 |   |
-//      +---+---+---+---+---+---+---+
-//      |   |   | A |   | B |   |   |
-//      +---+---+---+---+---+---+---+
-//              |   | 3 |   |
-//      +---+---+---+---+---+---+---+
-//      |   |   | C |   | D |   |   |
-//      +---+---+---+---+---+---+---+
-//      |   | 4 |   |   |   | 5 |   |
-//      +---+---+---+   +---+---+---+
-//      |   |   |   |   |   |   |   |
-//      +---+---+---+   +---+---+---+
-//
-//   The slots in the four squares labelled A, B, C, D that overlap
-//   the centre and outer four puzzles must be solved for both
-//   puzzles.
-//
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//   Class Samurai defines some puzzles from the UK Saturday Times and
-//   solves them.
-//
-///////////////////////////////////////////////////////////////////////////////
-
 import src.Arayuz;
 
 import javax.swing.*;
@@ -79,7 +22,7 @@ class Samurai extends JPanel{
         samuriArr = samurai.getSumariDokuArrFromFile();
 
         Scanner scanner = new Scanner(System.in);
-        String secim = "Seçiminiz:\n"
+        String secim = "İşlemler:\n"
                 +"Çözülmemiş Sudokuyu Göster (1)\n"
                 +"Sudokuyu Çöz ve Göster (2)\n"
                 +"5 Thread Grafiği Göster (3)\n"
